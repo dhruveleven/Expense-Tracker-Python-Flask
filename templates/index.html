@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block head %}
+<title>Expense Tracker</title>
+{% endblock %} {% block body %}
+<div class="content">
+  <div class="header">
+    <h1>Expense Tracker</h1>
+  </div>
+  {% if expenses|length < 1 %}
+  <h3 style="text-align: center">NO EXPENSES TO TRACK</h3>
+  {% else %}
+  <table>
+    <tr>
+      <th>AMOUNT</th>
+      <th>DATE</th>
+      <th>CATEGORY</th>
+      <th>DESCRIPTION</th>
+      <th>ACTION</th>
+    </tr>
+    {% for expense in expenses %}
+    <tr>
+      <td>{{expense.amount}}</td>
+      <td>{{expense.date}}</td>
+      <td>{{expense.category}}</td>
+      <td>{{expense.description}}</td>
+      <td>
+        <a href="/delete/{{expense.id}}">Delete</a>
+        <br />
+        <a href="/update/{{expense.id}}">Update</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  <table>
+    <tr>
+      <td>Total Expense :</td>
+      <td>{{ total_expenses }}</td>
+    </tr>
+    <tr>
+      <td>Budget :</td>
+      <td>20000</td>
+    </tr>
+    <tr>
+      <td>Remaining budget :</td>
+      <td>{{remaining_balance}}</td>
+    </tr>
+  </table>
+  <div class="form">
+    <form action="/" method="POST">
+      <input
+        type="number"
+        name="amount"
+        id="amount"
+        placeholder="Enter amount..."
+      />
+      <select name="category" id="category">
+        <option value="" disabled selected>Choose Category</option>
+        <option value="Self">Self</option>
+        <option value="House">House</option>
+        <option value="Office">Office</option>
+      </select>
+
+      <input
+        type="text"
+        name="description"
+        id="description"
+        placeholder="Enter expense description..."
+      />
+      <input type="submit" value="Add Expense" />
+    </form>
+    <form action="/" method="GET">
+      <label for="category" class="center-label">Filter by category:</label>
+      <select name="category" id="category">
+        <option value="">All</option>
+        <option value="Self">Self</option>
+        <option value="House">House</option>
+        <option value="Office">Office</option>
+      </select>
+      <button type="submit" class="center_button">Apply Filter</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
